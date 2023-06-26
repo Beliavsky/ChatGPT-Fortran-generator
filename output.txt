@@ -1,0 +1,671 @@
+
+**task: Write a Fortran program to compute Euler's number using a Taylor series with the number of terms
+`nterms` equal to 1000. Set `integer, parameter :: dp = kind(1.0d0)` and declare real variables
+as `real(kind=dp)`. Use :: in declarations.  Use implicit none and make sure to declare
+all variables. You MUST use ```fortran to show the start of Fortran code.**
+
+attempt 1
+program euler
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  integer :: nterms
+  real(kind=dp) :: euler, term, denominator
+  integer :: factorial, i, j
+  nterms = 1000
+  euler = 0.0_dp
+  do i = 0, nterms-1
+    factorial = 1
+    denominator = 1.0_dp
+    do j = 1, i
+      factorial = factorial * j
+      denominator = denominator * (i + 1.0_dp)
+    end do
+    term = 1.0_dp * factorial / denominator
+    euler = euler + term
+  end do
+  print *, "Euler's number is:", euler
+end program euler
+
+Compilation failed with the following output:
+temp.f90:5:24:
+
+    5 |   real(kind=dp) :: euler, term, denominator
+      |                        1
+Error: Symbol 'euler' at (1) cannot have a type
+temp.f90:8:8:
+
+    8 |   euler = 0.0_dp
+      |        1
+Error: 'euler' at (1) is not a variable
+temp.f90:17:10:
+
+   17 |     euler = euler + term
+      |          1
+Error: 'euler' at (1) is not a variable
+temp.f90:19:38:
+
+   19 |   print *, "Euler's number is:", euler
+      |                                      1
+Error: Symbol at (1) is not appropriate for an expression
+temp.f90:11:15:
+
+   11 |     denominator = 1.0_dp
+      |               1
+Error: Symbol 'denominator' at (1) has no IMPLICIT type
+temp.f90:16:8:
+
+   16 |     term = 1.0_dp * factorial / denominator
+      |        1
+Error: Symbol 'term' at (1) has no IMPLICIT type; did you mean 'nterms'?
+
+attempt 2
+program euler_number
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  integer :: nterms, i
+  real(dp) :: term, sum, factorial
+  nterms = 1000
+  sum = 0.0_dp
+  do i = 0, nterms
+     factorial = 1.0_dp
+     term = 1.0_dp
+     do while (i >= 1)
+        factorial = factorial * i
+        i = i - 1
+     end do
+     do while (i <= nterms - 1)
+        term = term / real(i+1, kind=dp)
+        i = i + 1
+     end do
+     sum = sum + term / factorial
+  end do
+  write(*,*) "Euler's number: ", sum
+end program euler_number
+
+Compilation failed with the following output:
+temp.f90:13:17:
+
+    8 |   do i = 0, nterms
+      |                  2
+......
+   13 |         i = i - 1
+      |                 1
+Error: Variable 'i' at (1) cannot be redefined inside loop beginning at (2)
+temp.f90:17:17:
+
+    8 |   do i = 0, nterms
+      |                  2
+......
+   17 |         i = i + 1
+      |                 1
+Error: Variable 'i' at (1) cannot be redefined inside loop beginning at (2)
+
+attempt 3
+program euler_number
+    implicit none
+    integer, parameter :: dp = kind(1.0d0)
+    real(kind=dp) :: e, fact, term
+    integer :: i, nterms
+    ! Set number of terms
+    nterms = 1000
+    ! Compute Euler's number using Taylor series
+    e = 1.0_dp
+    fact = 1.0_dp
+    do i = 1, nterms
+        fact = fact * i
+        term = 1.0_dp / fact
+        e = e + term
+    end do
+    ! Print result
+    write(*,*) "Euler's number = ", e
+end program euler_number
+
+output:
+ Euler's number =    2.7182818284590455     
+
+attempt 4
+program euler_number
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  integer :: n, nterms
+  real(kind=dp) :: euler, term
+  nterms = 1000
+  euler = 1.0_dp ! initialize euler to 1
+  term = 1.0_dp
+  do n = 1, nterms
+    term = term / n ! compute the next term in the Taylor series
+    euler = euler + term ! add the new term to the sum
+  end do
+  write(*,*) "Euler's number is", euler
+end program euler_number
+
+output:
+ Euler's number is   2.7182818284590455     
+
+attempt 5
+program euler_number
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  integer :: i, nterms = 1000
+  real(kind=dp) :: euler, term, fact
+  euler = 1.0_dp
+  term = 1.0_dp
+  do i = 1, nterms
+     fact = 1.0_dp
+     do j = 1, i
+        fact = fact * j
+     end do
+     term = term / fact
+     euler = euler + term
+  end do
+  write(*,*) "Euler's number is: ", euler
+end program euler_number
+
+Compilation failed with the following output:
+temp.f90:10:9:
+
+   10 |      do j = 1, i
+      |         1
+Error: Symbol 'j' at (1) has no IMPLICIT type
+
+attempt 6
+program compute_euler_number
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  integer :: i, nterms
+  real(kind=dp) :: e, fact, term
+  nterms = 1000
+  e = 1.0_dp
+  do i = 1, nterms
+    fact = 1.0_dp
+    do j = 2, i
+      fact = fact * j
+    end do
+    term = 1.0_dp / fact
+    e = e + term
+  end do
+  write(*,*) 'Euler Number =', e
+end program compute_euler_number
+
+Compilation failed with the following output:
+temp.f90:10:8:
+
+   10 |     do j = 2, i
+      |        1
+Error: Symbol 'j' at (1) has no IMPLICIT type
+
+attempt 7
+program compute_euler_number
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  real(dp) :: euler_num = 1.0_dp, term = 1.0_dp
+  integer :: i, nterms = 1000
+  do i = 1, nterms
+     term = term / i
+     euler_num = euler_num + term
+  end do
+  write(*,*) "Euler's number is ", euler_num
+end program compute_euler_number
+
+output:
+ Euler's number is    2.7182818284590455     
+
+attempt 8
+program compute_eulers_number
+    implicit none
+    integer, parameter :: dp = kind(1.0d0)
+    integer :: i, nterms
+    real(kind=dp) :: e, term, factorial
+    nterms = 1000
+    e = 1.0_dp
+    term = 1.0_dp
+    factorial = 1.0_dp
+    do i = 1, nterms
+        factorial = factorial * real(i, dp)
+        term = term / factorial
+        e = e + term
+    end do
+    print *, "Euler's number: ", e
+end program compute_eulers_number
+
+output:
+ Euler's number:    2.5868345309364718     
+
+attempt 9
+program euler_number
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  real(kind=dp) euler, term
+  integer i, nterms
+  nterms = 1000
+  euler = 1.0_dp
+  term = 1.0_dp
+  do i = 1, nterms
+     term = term / real(i, kind=dp)
+     euler = euler + term
+  end do
+  write(*,*) "Euler's number is: ", euler
+end program euler_number
+
+output:
+ Euler's number is:    2.7182818284590455     
+
+attempt 10
+program compute_euler
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  integer :: n
+  real(kind=dp) :: e, term, fact
+  e = 1.0_dp
+  term = 1.0_dp
+  fact = 1.0_dp
+  do n = 1, 1000
+    fact = fact * n
+    term = term / fact
+    e = e + term
+  end do
+  write(*,*) "Euler's number with 1000 terms:", e
+end program compute_euler
+
+output:
+ Euler's number with 1000 terms:   2.5868345309364718     
+
+
+**task: Write a Fortran program to compute the prime numbers below 50. Set `integer, parameter :: dp = kind(1.0d0)` and declare real variables
+as `real(kind=dp)`. Use :: in declarations.  Use implicit none and make sure to declare
+all variables. You MUST use ```fortran to show the start of Fortran code.**
+
+attempt 1
+program primes
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  real(kind=dp) :: num, factor
+  integer :: i, j, is_prime
+  write(*,*) 'Prime numbers below 50:'
+  do i = 2, 50
+    num = i
+    is_prime = 1
+    do j = 2, int(sqrt(num))
+      factor = j
+      if (mod(num,factor) == 0) then
+        is_prime = 0
+        exit
+      endif
+    enddo
+    if (is_prime == 1) then
+      write(*,*) num
+    endif
+  enddo
+end program primes
+!! 
+!! Note: We use the `sqrt` function from the `int` intrinsic module to find the square root of `num` and the `mod` intrinsic function to check if `factor` divides `num`. The loop is exited if a factor is found, as `num` is not a prime. In the main program we simply loop through all integers between 2 and 50 and call a subprogram to determine if each is prime. If the subprogram returns true, we output the integer.
+
+output:
+ Prime numbers below 50:
+   2.0000000000000000     
+   3.0000000000000000     
+   5.0000000000000000     
+   7.0000000000000000     
+   11.000000000000000     
+   13.000000000000000     
+   17.000000000000000     
+   19.000000000000000     
+   23.000000000000000     
+   29.000000000000000     
+   31.000000000000000     
+   37.000000000000000     
+   41.000000000000000     
+   43.000000000000000     
+   47.000000000000000     
+
+attempt 2
+program prime_numbers
+    implicit none
+    integer, parameter :: dp = kind(1.0d0)
+    integer :: i, j
+    real(kind=dp) :: sqrt_n
+    logical :: is_prime
+    do i = 2, 50
+        is_prime = .true.
+        sqrt_n = sqrt(real(i, kind=dp))
+        do j = 2, i-1
+            if (mod(i,j) == 0) then
+                is_prime = .false.
+                exit
+            elseif (real(j,kind=dp) > sqrt_n) then
+                exit
+            end if
+        end do
+        if (is_prime) then
+            write(*,*) i
+        end if
+    end do
+end program prime_numbers
+
+output:
+           2
+           3
+           5
+           7
+          11
+          13
+          17
+          19
+          23
+          29
+          31
+          37
+          41
+          43
+          47
+
+attempt 3
+program primes_below_50
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  integer, parameter :: n = 50
+  integer :: i, j, is_prime
+  real(kind=dp) :: numbers(n)
+  numbers = [(i, i=2,n)]
+  do i=2,n
+     is_prime = 1
+     do j=2,i-1
+        if (mod(i,j) == 0) then
+           is_prime = 0
+           exit
+        end if
+     end do
+     if (is_prime == 1) then
+        write(*,*) numbers(i)
+     end if
+  end do
+end program primes_below_50
+
+Compilation failed with the following output:
+temp.f90:7:2:
+
+    7 |   numbers = [(i, i=2,n)]
+      |  1
+Error: Different shape for array assignment at (1) on dimension 1 (50 and 49)
+
+attempt 4
+program prime_numbers
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  integer :: i, j, n
+  real(kind=dp) :: sqrt_n
+  logical :: is_prime
+  do n = 2, 50
+    sqrt_n = sqrt(real(n, kind=dp))
+    is_prime = .true.
+    do i = 2, n-1
+      if (mod(n, i) == 0) then
+        is_prime = .false.
+        exit
+      end if
+      if (real(i, kind=dp) > sqrt_n) then
+        exit
+      end if
+    end do
+    if (is_prime) then
+      write(*,*) n
+    end if
+  end do
+end program prime_numbers
+
+output:
+           2
+           3
+           5
+           7
+          11
+          13
+          17
+          19
+          23
+          29
+          31
+          37
+          41
+          43
+          47
+
+attempt 5
+program prime_numbers
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  real(kind=dp) :: i, j
+  integer :: n
+  do n = 2, 50
+     do i = 2, n-1
+        j = n/i
+        if (j == int(j)) then
+           exit
+        end if
+     end do
+     if (i == n-1) then
+        print *, n
+     end if
+  end do
+end program prime_numbers
+
+output:
+
+attempt 6
+program primes
+    implicit none
+    integer, parameter :: dp = kind(1.0d0)
+    integer :: n, i
+    real(kind=dp) :: sqrt_n
+    logical :: is_prime
+    print*, "Prime numbers less than 50:"
+    do n = 2, 49
+        is_prime = .true.
+        sqrt_n = sqrt(real(n, dp))
+        do i = 2, int(sqrt_n)
+            if (mod(n, i) == 0) then
+                is_prime = .false.
+                exit
+            endif
+        end do
+        if (is_prime) print*, n
+    end do
+end program primes
+!! 
+!! Note: The program checks whether each number n is a prime by checking whether it is divisible by any integer from 2 to int(sqrt(n)). If it is not divisible by any of these integers, then it is a prime number.
+
+output:
+ Prime numbers less than 50:
+           2
+           3
+           5
+           7
+          11
+          13
+          17
+          19
+          23
+          29
+          31
+          37
+          41
+          43
+          47
+
+attempt 7
+program prime_numbers
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  real(kind=dp) :: num
+  integer :: i, j
+  logical :: is_prime
+  do i = 2, 50
+     num = real(i, dp)
+     is_prime = .true.
+     do j = 2, i-1
+        if (mod(i,j) == 0) then
+           is_prime = .false.
+           exit
+        end if
+     end do
+     if (is_prime) then
+        write(*,*) 'Prime number: ', i
+     end if
+  end do
+end program prime_numbers
+
+output:
+ Prime number:            2
+ Prime number:            3
+ Prime number:            5
+ Prime number:            7
+ Prime number:           11
+ Prime number:           13
+ Prime number:           17
+ Prime number:           19
+ Prime number:           23
+ Prime number:           29
+ Prime number:           31
+ Prime number:           37
+ Prime number:           41
+ Prime number:           43
+ Prime number:           47
+
+attempt 8
+program prime_numbers
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  real(kind=dp) :: candidate, divisor
+  integer :: i
+  do i = 2, 50
+    candidate = i
+    if (is_prime(candidate)) then
+      write(*,*) candidate
+    endif
+  end do
+contains
+  function is_prime(n) result(prime)
+    integer :: n, i
+    logical :: prime
+    prime = .TRUE.
+    do i = 2, n-1
+      divisor = i
+      if (mod(n,divisor) == 0) then
+        prime = .FALSE.
+        exit
+      end if
+    end do
+  end function is_prime
+end program prime_numbers
+!! 
+!! Note: This program uses a function called `is_prime` to determine if a given number is prime. This function returns `True` if the number is prime, and `False` otherwise. The `mod` operator is used to check if the candidate number is divisible by any number between 2 and n-1. If the modulo operation returns 0, then the candidate is not prime and the function returns `False`. If the function reaches the end of the loop without finding any divisors, then the candidate is prime and the function returns `True`.
+
+Compilation failed with the following output:
+temp.f90:19:16:
+
+   19 |       if (mod(n,divisor) == 0) then
+      |                1
+Error: 'a' and 'p' arguments of 'mod' intrinsic at (1) must have the same type
+temp.f90:8:8:
+
+    8 |     if (is_prime(candidate)) then
+      |        1
+Error: Type mismatch in argument 'n' at (1); passed REAL(8) to INTEGER(4)
+
+attempt 9
+program prime
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  integer :: i, j
+  real(kind=dp) :: number
+  logical :: is_prime
+  write(*,*) "List of prime numbers below 50:"
+  do i = 2, 50
+    is_prime = .true.
+    number = real(i,dp)
+    do j = 2, i-1
+      if (mod(i,j)==0) then
+        is_prime = .false.
+        exit
+      end if
+    end do
+    if (is_prime) write(*,*) i
+  end do
+end program prime
+!! 
+!! Output:
+!! List of prime numbers below 50:
+!!            2
+!!            3
+!!            5
+!!            7
+!!           11
+!!           13
+!!           17
+!!           19
+!!           23
+!!           29
+!!           31
+!!           37
+!!           41
+!!           43
+!!           47
+
+output:
+ List of prime numbers below 50:
+           2
+           3
+           5
+           7
+          11
+          13
+          17
+          19
+          23
+          29
+          31
+          37
+          41
+          43
+          47
+
+attempt 10
+program prime_numbers
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  integer i, j, n, count
+  real(kind=dp) sqrtN
+  do n = 2, 50
+     sqrtN = sqrt(real(n))
+     count = 0
+     do i = 2, n-1
+        if (mod(n,i) .eq. 0) then
+           count = count+1
+           exit
+        end if
+     end do
+     if (count == 0) then
+        write(*,'(I3)') n
+     end if
+  end do
+end program prime_numbers
+
+output:
+  2
+  3
+  5
+  7
+ 11
+ 13
+ 17
+ 19
+ 23
+ 29
+ 31
+ 37
+ 41
+ 43
+ 47
+
+
+time elapsed (sec): 170.03 for 2 tasks and 10 tries each.
