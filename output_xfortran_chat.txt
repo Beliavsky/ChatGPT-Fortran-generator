@@ -1,0 +1,155 @@
+Sample output of "python xfortran_chat.py":
+
+gpt model: gpt-3.5-turbo-0613
+
+**task: Write a Fortran program to compute Euler's number in a variable called `euler` using a Taylor series with the number of terms
+`nterms` equal to 1000. Set `integer, parameter :: dp = kind(1.0d0)` and declare real variables
+as `real(kind=dp)`. Use :: in declarations.  Use implicit none on the 2nd line
+and make sure to declare all variables. Name the program 'main`. You MUST use
+```fortran to show the start of Fortran code. Use loop variables named i, j, k, and
+remember to declare them if used.**
+
+attempt 1
+!! Here is the Fortran program that computes Euler's number using a Taylor series:
+!! 
+program main
+  implicit none
+  integer, parameter :: dp = kind(1.0d0)
+  real(kind=dp) :: euler, term, factorial
+  integer :: nterms, i
+  ! Set the number of terms in the Taylor series
+  nterms = 1000
+  ! Initialize the variables
+  euler = 1.0_dp
+  term = 1.0_dp
+  factorial = 1.0_dp
+  ! Compute Euler's number using the Taylor series
+  do i = 1, nterms
+    ! Compute the terms in the Taylor series
+    term = term / i
+    ! Compute the factorial
+    factorial = factorial * i
+    ! Update the Euler's number
+    euler = euler + term
+  end do
+  ! Print the result
+  print *, "Euler's number:", euler
+end program main
+!! 
+!! Make sure to save the program with a `.f90` or `.f95` extension, and then compile and run it using a Fortran compiler.
+
+output:
+ Euler's number:   2.7182818284590455     
+
+attempt 2
+!! Here is the Fortran program to compute Euler's number using a Taylor series:
+!! 
+program main
+    implicit none
+    integer, parameter :: dp = kind(1.0d0)
+    real(kind=dp) euler
+    real(kind=dp) term, factorial
+    integer :: i, nterms
+    nterms = 1000
+    euler = 1.0_dp
+    do i = 1, nterms
+        term = 1.0_dp
+        factorial = 1.0_dp
+        do j = 1, i
+            factorial = factorial * j
+            term = term / j
+        end do
+        euler = euler + term
+        if (term < 1.0e-15_dp) exit
+    end do
+    write(*,*) "The value of Euler's number is:", euler
+end program main
+!! 
+!! In this program, we use a do loop to calculate each term in the Taylor series and add it to the `euler` variable. We also use a nested do loop to calculate the factorial and the term value. The loop variable `i` is used to keep track of the number of terms. The loop is terminated when the term value becomes very small (`< 1.0e-15`). Finally, we print the calculated value of Euler's number.
+
+Compilation failed with the following output:
+temp.f90:14:12:
+
+   14 |         do j = 1, i
+      |            1
+Error: Symbol 'j' at (1) has no IMPLICIT type
+
+
+**task: Write a Fortran program to compute the prime numbers below 50. Set `integer, parameter :: dp = kind(1.0d0)` and declare real variables
+as `real(kind=dp)`. Use :: in declarations.  Use implicit none on the 2nd line
+and make sure to declare all variables. Name the program 'main`. You MUST use
+```fortran to show the start of Fortran code. Use loop variables named i, j, k, and
+remember to declare them if used.**
+
+attempt 1
+program main
+    implicit none
+    integer, parameter :: dp = kind(1.0d0)
+    real(kind=dp) :: number
+    logical :: is_prime
+    write(*,*)"Prime numbers below 50:"
+    do number = 2, 50
+        is_prime = .TRUE.
+        do i = 2, sqrt(number)
+            if (mod(number, i) == 0) then
+                is_prime = .FALSE.
+                exit
+            end if
+        end do
+        if (is_prime) then
+            write(*,*) number
+        end if
+    end do
+end program main
+
+Compilation failed with the following output:
+temp.f90:9:12:
+
+    9 |         do i = 2, sqrt(number)
+      |            1
+Error: Symbol 'i' at (1) has no IMPLICIT type
+temp.f90:7:7:
+
+    7 |     do number = 2, 50
+      |       1
+Warning: Deleted feature: Loop variable at (1) must be integer
+
+attempt 2
+program main
+    implicit none
+    integer, parameter :: dp = kind(1.0d0)
+    real(kind=dp) :: i, j
+    integer :: k
+    do i = 2, 50
+        k = 0
+        do j = 2, i-1
+            if (mod(i, j) == 0) then
+                k = 1
+                exit
+            end if
+        end do
+        if (k .eq. 0) then
+            write(*,*) i
+        end if
+    end do
+end program main
+
+output:
+   2.0000000000000000     
+   3.0000000000000000     
+   5.0000000000000000     
+   7.0000000000000000     
+   11.000000000000000     
+   13.000000000000000     
+   17.000000000000000     
+   19.000000000000000     
+   23.000000000000000     
+   29.000000000000000     
+   31.000000000000000     
+   37.000000000000000     
+   41.000000000000000     
+   43.000000000000000     
+   47.000000000000000     
+
+
+time elapsed (sec): 28.33 for 2 tasks and 2 tries each.
