@@ -4,7 +4,7 @@ from fortran import markdown_to_fortran, debug_fortran, compile_and_run_fortran
 from chat_python import ask_gpt
 
 start = time.time()
-openai.api_key = "my_key" # change this
+openai.api_key = "my_key" # change to your key
 gpt_model = "gpt-3.5-turbo-0613" # "gpt-4-0613"
 print_answer = True
 print_raw_code = True
