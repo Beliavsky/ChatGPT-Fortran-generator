@@ -4,7 +4,7 @@ from fortran import markdown_to_fortran, compile_and_run_fortran
 
 start = time.time()
 openai.api_key = "my_key" # change to your key
-gpt_model = "gpt-3.5-turbo-0613" # "gpt-4-0613"
+gpt_model = "gpt-3.5-turbo-0613" # "gpt-4"
 print_answer = False
 print_code = True
 ntries = 2 # of times each task is attempted
