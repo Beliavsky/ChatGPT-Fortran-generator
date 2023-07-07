@@ -5,7 +5,7 @@ from chat_python import ask_gpt
 
 start = time.time()
 openai.api_key = "my_key" # change to your key
-gpt_model = "gpt-3.5-turbo-0613" # "gpt-4-0613"
+gpt_model = "gpt-3.5-turbo-0613" # "gpt-4"
 print_answer = True
 print_raw_code = True
 ntries = 4 # of times each task is attempted
