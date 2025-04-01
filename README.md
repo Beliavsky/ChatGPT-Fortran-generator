@@ -6,3 +6,11 @@ to ChatGPT and asking for fixes.
 
 #### Update 2023-07-07
 `gpt-4` is now an allowed model in the API, and in the script one can set the variable `gpt_model` to it.
+
+#### Update 2025-03-31
+The scripts here no longer run, with error messages such as
+
+```
+You tried to access openai.ChatCompletion, but this is no longer supported in openai>=1.0.0 - see the README at https://github.com/openai/openai-python for the API.
+```
+I suggest trying https://github.com/Beliavsky/OpenAI-Fortran-agent instead.
